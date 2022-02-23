@@ -17,8 +17,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sherlockode_sonata_gentelella');
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('sherlockode_sonata_gentelella');
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('sherlockode_sonata_gentelella');
+        }
 
         $rootNode
             ->children()
